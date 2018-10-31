@@ -1,0 +1,7 @@
+{
+  "testEnvironment": "node",
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
+  }
+}

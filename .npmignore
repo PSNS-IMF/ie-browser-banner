@@ -1,7 +1,9 @@
+.babelrc
+.eslintrc.json
+.eslintignore.json
+.gitignore
 .vscode
 src
 test
-.eslintrc.json
-.eslintignore.json
 jestconfig.json
 webpack.config.js

@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "Displays a dismissable banner when Internet Explorer is detected",
   "main": "dist/ie-browser-banner.js",
-  "module": "src/index.js",
+  "module": "dist/ie-browser-banner.js",
   "scripts": {
     "build": "webpack",
     "test": "jest",
-    "lint": "eslint src/** test/**"
+    "lint": "eslint src/** test/**",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "git add -A src test",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

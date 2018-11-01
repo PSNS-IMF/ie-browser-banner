@@ -1,6 +1,6 @@
 .babelrc
 .eslintrc.json
-.eslintignore.json
+.eslintignore
 .gitignore
 .vscode
 src

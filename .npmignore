@@ -2,4 +2,6 @@
 src
 test
 .eslintrc.json
+.eslintignore.json
 jestconfig.json
+webpack.config.js

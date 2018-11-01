@@ -2,8 +2,10 @@
   "name": "@psns/ie-browser-banner",
   "version": "1.0.0",
   "description": "Displays a dismissable banner when Internet Explorer is detected",
-  "main": "src/index.js",
+  "main": "dist/ie-browser-banner.js",
+  "module": "src/index.js",
   "scripts": {
+    "build": "webpack",
     "test": "jest",
     "lint": "eslint src/**"
   },
@@ -25,9 +27,12 @@
   },
   "homepage": "https://github.com/PSNS-IMF/ie-browser-banner#readme",
   "devDependencies": {
+    "angular": "^1.4.3",
+    "angular-mocks": "^1.4.3",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^0.1.19",
     "eslint": "^5.8.0",
     "jest": "^23.6.0",
     "webpack": "^4.23.1",

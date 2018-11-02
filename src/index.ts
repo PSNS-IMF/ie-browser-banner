@@ -1,6 +1,4 @@
-import angular from 'angular';
-
-export interface IIEDocumentService
+interface IIEDocumentService
 {
   [index: number]: any;
 }

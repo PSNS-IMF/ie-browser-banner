@@ -1,7 +1,6 @@
 import angular from 'angular';
 import 'angular-mocks';
 import '../src';
-import { IIEDocumentService } from '../src';
 
 const defaultClasses = 'alert alert-warning text-center';
 const defaultMessage = 'We recommend using Chrome, Edge, or Firefox for the optimal experience.';

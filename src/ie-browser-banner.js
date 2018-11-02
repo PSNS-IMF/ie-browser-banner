@@ -18,7 +18,7 @@ export default ($document, $timeout) =>
     link: (scope, element, attr, controller) =>
     {
       // Internet Explorer 6-11
-      const isIE = false || !!$document.documentMode;
+      const isIE = false || !!$document[0].documentMode;
       const delay = isNaN(+controller.delay) ? 500 : controller.delay;
 
       scope.message = controller.message || 'We recommend using Chrome, Edge, or Firefox for the optimal experience.';

@@ -22,3 +22,4 @@ Displays a warning banner with alternative browser recommendations when Internet
 ### Misc
 
   * [Markdown](https://guides.github.com/features/mastering-markdown/#what)
+  * [IE Detection](https://github.com/angular/angular.js/blob/v1.4.3/src/Angular.js#L187-L191)

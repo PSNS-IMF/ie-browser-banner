@@ -37,12 +37,14 @@ describe('Internet Explorer', () =>
   let element, closeButton;
   beforeEach(() =>
   {
-    $document.documentMode = 11;
+    $document[0].documentMode = 11;
     load();
 
     element = parent.children().eq(0);
     closeButton = element.children().eq(0);
   });
+
+  afterEach(() => delete $document[0].documentMode);
 
   test('it is shown with animation', () =>
   {

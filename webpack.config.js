@@ -14,12 +14,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   externals: {
-    angular: {
-      commonjs: 'angular',
-      commonjs2: 'angular',
-      amd: 'angular',
-      root: '_'
-    }
+    angular: 'angular'
   },
   module: {
     rules: [

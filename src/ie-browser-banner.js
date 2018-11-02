@@ -1,4 +1,4 @@
-export default ($document, $timeout) =>
+export default ['$document', '$timeout', ($document, $timeout) =>
   ({
     scope: {},
     replace: true,
@@ -58,5 +58,5 @@ export default ($document, $timeout) =>
         scope.dismiss();
       }
     }
-  });
+  })];
   

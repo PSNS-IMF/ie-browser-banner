@@ -1,6 +1,6 @@
 {
   "name": "@psns/ie-browser-banner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Displays a dismissable banner when Internet Explorer is detected",
   "main": "dist/ie-browser-banner.js",
   "module": "dist/ie-browser-banner.js",

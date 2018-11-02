@@ -2,12 +2,12 @@
   "name": "@psns/ie-browser-banner",
   "version": "1.0.2",
   "description": "Displays a dismissable banner when Internet Explorer is detected",
-  "main": "dist/ie-browser-banner.js",
-  "module": "dist/ie-browser-banner.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "scripts": {
-    "build": "webpack",
-    "test": "jest",
-    "lint": "eslint src/** test/**",
+    "build": "tsc -p tsconfig.app.json",
+    "test": "jest --config jestconfig.json",
+    "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
@@ -32,17 +32,14 @@
   },
   "homepage": "https://github.com/PSNS-IMF/ie-browser-banner#readme",
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
+    "@types/angular": "^1.6.51",
+    "@types/angular-mocks": "^1.7.0",
+    "@types/jest": "^23.3.9",
     "angular": "^1.4.3",
     "angular-mocks": "^1.4.3",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "babel-loader": "^8.0.4",
-    "clean-webpack-plugin": "^0.1.19",
-    "eslint": "^5.8.0",
     "jest": "^23.6.0",
-    "webpack": "^4.23.1",
-    "webpack-cli": "^3.1.2"
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
   }
 }

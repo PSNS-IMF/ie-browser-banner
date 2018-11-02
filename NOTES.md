@@ -3,8 +3,9 @@
 ### Code
 
   * [AngularJS](https://code.angularjs.org/1.4.3/docs/guide/unit-testing)
-  * [ESLint](https://eslint.org/docs/user-guide/getting-started)
   * [Jest](https://jestjs.io/docs/en/getting-started)
+  * [TSLint](https://palantir.github.io/tslint/)
+  * [TypeScript](https://www.typescriptlang.org/docs/home.html)
 
 ### Packaging
 

@@ -1,11 +1,16 @@
 import angular from 'angular';
 import 'angular-mocks';
 import '../src';
+import { IIEDocumentService } from '../src';
 
 const defaultClasses = 'alert alert-warning text-center';
 const defaultMessage = 'We recommend using Chrome, Edge, or Firefox for the optimal experience.';
 
-let $compile, scope, $document, $timeout, parent;
+let $compile: ng.ICompileService;
+let scope: any;
+let $document: IIEDocumentService;
+let $timeout: ng.ITimeoutService;
+let parent: JQLite;
 
 beforeEach(() =>
 {
@@ -34,7 +39,9 @@ const load = (msg = null, delay = 0, cls = null) =>
 
 describe('Internet Explorer', () =>
 {
-  let element, closeButton;
+  let element: JQLite;
+  let closeButton: JQLite;
+
   beforeEach(() =>
   {
     $document[0].documentMode = 11;
@@ -73,7 +80,7 @@ describe('Internet Explorer', () =>
 
 describe('Non Internet Explorer', () =>
 {
-  beforeEach(load);
+  beforeEach(() => load());
 
   test('it is removed from the DOM', () =>
   {

@@ -3,22 +3,99 @@ interface IIEDocumentService
   [index: number]: any;
 }
 
+interface IOperatingSystem
+{
+  name: string;
+  version: number;
+}
+
 angular
   .module('psns', [])
   .directive(
     'ieBrowserBanner',
-    ['$document', '$timeout', ($document: ng.IDocumentService | IIEDocumentService, $timeout: ng.ITimeoutService) =>
+    ['$window', '$document', '$timeout', (
+      $window: ng.IWindowService,
+      $document: ng.IDocumentService | IIEDocumentService,
+      $timeout: ng.ITimeoutService) =>
   {
+    function getOS(wantedName: string | null, wantedVersion: string | null) : IOperatingSystem | null
+    {
+      if (!wantedName || !wantedVersion)
+      {
+        return null;
+      }
+
+      let os = {
+        name: '',
+        version: 0
+      };
+
+      const header = [
+        $window.navigator.platform,
+        $window.navigator.userAgent,
+        $window.navigator.appVersion,
+        $window.navigator.vendor
+      ];
+
+      const agent = header.join(' ');
+      const regex = new RegExp(wantedName, 'i');
+      const osMatch = regex.test(agent);
+
+      if (osMatch)
+      {
+        const rxVersion = new RegExp(wantedVersion + '[- /:;]([\\d._]+)', 'i');
+        const matches = agent.match(rxVersion);
+
+        let version = '';
+        let rxMatch = '';
+
+        if (matches)
+        {
+          rxMatch = matches[1] || matches[0] || '';
+        }
+
+        if (rxMatch)
+        {
+          const rxMatches = rxMatch.split(/[._]+/);
+
+          for (let j = 0; j < rxMatches.length; j++)
+          {
+            if (j === 0)
+            {
+              version += rxMatches[j] + '.';
+            }
+            else
+            {
+              version += rxMatches[j];
+            }
+          }
+
+          os.name = wantedName;
+          os.version = parseFloat(version);
+        }
+      }
+
+      return os;
+    }
+
     return {
       bindToController: {
         class: '@?',
         delay: '@?',
-        message: '@?'
+        message: '@?',
+        osName: '@?',
+        osVersion: '@?',
+        withOs: '=?'
       },
       controller: () => {},
       controllerAs: 'ctrl',
       link: (scope: any, element, attr, controller: any) =>
         {
+          const withOs =
+            controller.withOs,
+            osName = controller.osName,
+            osVersion = controller.osVersion;
+
           // Internet Explorer 6-11
           const isIE = false || !!$document[0].documentMode;
           const delay = isNaN(+controller.delay) ? 500 : controller.delay;
@@ -53,7 +130,11 @@ angular
 
           scope.dismiss = () => { element.remove(); };
 
-          if (!isIE)
+          if (isIE && (!withOs || withOs(getOS(osName, osVersion))))
+          {
+            return;
+          }
+          else
           {
             scope.dismiss();
           }

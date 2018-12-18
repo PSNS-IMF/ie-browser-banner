@@ -14,6 +14,7 @@ let parent: JQLite;
 beforeEach(() =>
 {
   angular.mock.module('psns');
+
   angular.mock.inject((_$compile_, _$rootScope_, _$document_, _$timeout_) =>
   {
     $compile = _$compile_;
@@ -23,11 +24,20 @@ beforeEach(() =>
   });
 });
 
-const load = (msg = null, delay = 0, cls = null) =>
+const load = (
+  msg = null,
+  delay = 0,
+  cls = null,
+  withOs: string | null = null,
+  osName: string | null = null,
+  osVersion: string | null = null) =>
 {
   const attrs = [
     msg ? `message="${msg}"` : '',
     cls ? `class="${cls}"` : '',
+    withOs ? `with-os="${withOs}"` : '',
+    osName ? `os-name="${osName}"` : '',
+    osVersion ? `os-version="${osVersion}"` : '',
     `delay="${delay}"`
   ].join(' ');
 
@@ -84,5 +94,40 @@ describe('Non Internet Explorer', () =>
   test('it is removed from the DOM', () =>
   {
     expect(parent.children().length).toBe(0);
+  });
+});
+
+describe('User Agent Matching', () =>
+{
+  beforeEach(() => $document[0].documentMode = 11);
+
+  afterEach(() => delete $document[0].documentMode);
+
+  test('it is shown when withOs returns true', () =>
+  {
+    scope.withOS = (os: IOperatingSystem) =>
+    {
+      expect(os.name).toBe('Win');
+      expect(os.version).toBeGreaterThan(0);
+
+      return true;
+    };
+
+    load(null, 0, null, 'withOS', 'Win', 'AppleWebKit');
+
+    const element = parent.children().eq(0);
+
+    expect(element.length).toBe(1);
+  });
+
+  test('it is not shown when withOs returns false', () =>
+  {
+    scope.withOS = (_os: IOperatingSystem) => false;
+
+    load(null, 0, null, 'withOS', 'Win', 'AppleWebKit');
+
+    const element = parent.children().eq(0);
+
+    expect(element.length).toBe(0);
   });
 });

@@ -18,14 +18,14 @@ angular
       $document: ng.IDocumentService | IIEDocumentService,
       $timeout: ng.ITimeoutService) =>
   {
-    function getOS(wantedName: string | null, wantedVersion: string | null) : IOperatingSystem | null
+    function getOS(wantedName: string | null, wantedVersion: string | null): IOperatingSystem | null
     {
       if (!wantedName || !wantedVersion)
       {
         return null;
       }
 
-      let os = {
+      const os = {
         name: '',
         version: 0
       };
@@ -91,10 +91,9 @@ angular
       controllerAs: 'ctrl',
       link: (scope: any, element, attr, controller: any) =>
         {
-          const withOs =
-            controller.withOs,
-            osName = controller.osName,
-            osVersion = controller.osVersion;
+          const withOs = controller.withOs;
+          const osName = controller.osName;
+          const osVersion = controller.osVersion;
 
           // Internet Explorer 6-11
           const isIE = false || !!$document[0].documentMode;

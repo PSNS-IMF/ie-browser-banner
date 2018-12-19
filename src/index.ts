@@ -17,7 +17,7 @@ angular
       console.debug(`IE Banner: ${message}`);
     }
 
-    function shouldHide(hideVersion: string): boolean
+    function shouldHide(hideVersion: string, osVersion: string): boolean
     {
       const agent = [
         $window.navigator.platform,
@@ -25,7 +25,7 @@ angular
         $window.navigator.appVersion,
         $window.navigator.vendor
       ].join(' ');
-      const rxVersion = new RegExp('AppleWebKit[- /:;]([\\d._]+)', 'i');
+      const rxVersion = new RegExp(`${osVersion}[- /:;]([\\d._]+)`, 'i');
       const matches = agent.match(rxVersion);
 
       debug(`agent: ${agent}`);
@@ -64,7 +64,8 @@ angular
         class: '@?',
         delay: '@?',
         hideVersion: '@?',
-        message: '@?'
+        message: '@?',
+        osVersion: '@?'
       },
       controller: () => {},
       controllerAs: 'ctrl',
@@ -74,6 +75,11 @@ angular
             controller.hideVersion
               ? controller.hideVersion
               : '';
+
+          const osVersion =
+            controller.osVersion
+              ? controller.osVersion
+              : 'NT';
 
           // Internet Explorer 6-11
           const isIE = false || !!$document[0].documentMode;
@@ -109,7 +115,7 @@ angular
 
           scope.dismiss = () => { element.remove(); };
 
-          if (isIE && !shouldHide(hideVersion))
+          if (isIE && !shouldHide(hideVersion, osVersion))
           {
             return;
           }

@@ -4,6 +4,7 @@ import '../src';
 
 const defaultClasses = 'alert alert-warning text-center';
 const defaultMessage = 'We recommend using Chrome, Edge, or Firefox for the optimal experience.';
+const jsDomOsVersion = 'AppleWebKit';
 
 let $compile: ng.ICompileService;
 let scope: any;
@@ -28,12 +29,14 @@ const load = (
   msg = null,
   delay = 0,
   cls = null,
-  hideList: string | null = null) =>
+  hideList: string | null = null,
+  osVersion: string | null = null) =>
 {
   const attrs = [
     msg ? `message="${msg}"` : '',
     cls ? `class="${cls}"` : '',
     hideList ? `hide-version="${hideList}"` : '',
+    osVersion ? `os-version="${osVersion}"` : '',
     `delay="${delay}"`
   ].join(' ');
 
@@ -50,7 +53,7 @@ describe('Internet Explorer', () =>
   beforeEach(() =>
   {
     $document[0].documentMode = 11;
-    load();
+    load(null, undefined, null, null, jsDomOsVersion);
 
     element = parent.children().eq(0);
     closeButton = element.children().eq(0);
@@ -101,7 +104,7 @@ describe('User Agent Matching', () =>
 
   test('it is shown when version not in hide list', () =>
   {
-    load(null, 0, null, 'invalid');
+    load(null, 0, null, 'invalid', jsDomOsVersion);
 
     const element = parent.children().eq(0);
 
@@ -110,7 +113,7 @@ describe('User Agent Matching', () =>
 
   test('it is not shown when version in hide list', () =>
   {
-    load(null, 0, null, '537.36');
+    load(null, 0, null, '537.36', jsDomOsVersion);
 
     const element = parent.children().eq(0);
 

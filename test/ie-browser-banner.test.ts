@@ -28,16 +28,12 @@ const load = (
   msg = null,
   delay = 0,
   cls = null,
-  withOs: string | null = null,
-  osName: string | null = null,
-  osVersion: string | null = null) =>
+  hideList: string | null = null) =>
 {
   const attrs = [
     msg ? `message="${msg}"` : '',
     cls ? `class="${cls}"` : '',
-    withOs ? `with-os="${withOs}"` : '',
-    osName ? `os-name="${osName}"` : '',
-    osVersion ? `os-version="${osVersion}"` : '',
+    hideList ? `hide-version="${hideList}"` : '',
     `delay="${delay}"`
   ].join(' ');
 
@@ -103,28 +99,18 @@ describe('User Agent Matching', () =>
 
   afterEach(() => delete $document[0].documentMode);
 
-  test('it is shown when withOs returns true', () =>
+  test('it is shown when version not in hide list', () =>
   {
-    scope.withOS = (os: IOperatingSystem) =>
-    {
-      expect(os.name).toBe('Win');
-      expect(os.version).toBeGreaterThan(0);
-
-      return true;
-    };
-
-    load(null, 0, null, 'withOS', 'Win', 'AppleWebKit');
+    load(null, 0, null, 'invalid');
 
     const element = parent.children().eq(0);
 
     expect(element.length).toBe(1);
   });
 
-  test('it is not shown when withOs returns false', () =>
+  test('it is not shown when version in hide list', () =>
   {
-    scope.withOS = (_os: IOperatingSystem) => false;
-
-    load(null, 0, null, 'withOS', 'Win', 'AppleWebKit');
+    load(null, 0, null, '537.36');
 
     const element = parent.children().eq(0);
 

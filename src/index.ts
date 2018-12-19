@@ -3,12 +3,6 @@ interface IIEDocumentService
   [index: number]: any;
 }
 
-interface IOperatingSystem
-{
-  name: string;
-  version: number;
-}
-
 angular
   .module('psns', [])
   .directive(
@@ -18,82 +12,68 @@ angular
       $document: ng.IDocumentService | IIEDocumentService,
       $timeout: ng.ITimeoutService) =>
   {
-    function getOS(wantedName: string | null, wantedVersion: string | null): IOperatingSystem | null
+    function debug(message: string)
     {
-      if (!wantedName || !wantedVersion)
-      {
-        return null;
-      }
+      console.debug(`IE Banner: ${message}`);
+    }
 
-      const os = {
-        name: '',
-        version: 0
-      };
-
-      const header = [
+    function shouldHide(hideVersion: string): boolean
+    {
+      const agent = [
         $window.navigator.platform,
         $window.navigator.userAgent,
         $window.navigator.appVersion,
         $window.navigator.vendor
-      ];
+      ].join(' ');
+      const rxVersion = new RegExp('AppleWebKit[- /:;]([\\d._]+)', 'i');
+      const matches = agent.match(rxVersion);
 
-      const agent = header.join(' ');
-      const regex = new RegExp(wantedName, 'i');
-      const osMatch = regex.test(agent);
+      debug(`agent: ${agent}`);
 
-      if (osMatch)
+      let version = '';
+      let rxMatch = '';
+
+      if (matches)
       {
-        const rxVersion = new RegExp(wantedVersion + '[- /:;]([\\d._]+)', 'i');
-        const matches = agent.match(rxVersion);
+        rxMatch = matches[1] || matches[0] || '';
+      }
 
-        let version = '';
-        let rxMatch = '';
+      if (rxMatch)
+      {
+        const rxMatches = rxMatch.split(/[._]+/);
 
-        if (matches)
+        for (let j = 0; j < rxMatches.length; j++)
         {
-          rxMatch = matches[1] || matches[0] || '';
-        }
-
-        if (rxMatch)
-        {
-          const rxMatches = rxMatch.split(/[._]+/);
-
-          for (let j = 0; j < rxMatches.length; j++)
+          if (j === 0)
           {
-            if (j === 0)
-            {
-              version += rxMatches[j] + '.';
-            }
-            else
-            {
-              version += rxMatches[j];
-            }
+            version += rxMatches[j] + '.';
           }
-
-          os.name = wantedName;
-          os.version = parseFloat(version);
+          else
+          {
+            version += rxMatches[j];
+          }
         }
       }
 
-      return os;
+      debug(`hideVersion: ${hideVersion} version: ${version}`);
+      return hideVersion === version;
     }
 
     return {
       bindToController: {
         class: '@?',
         delay: '@?',
-        message: '@?',
-        osName: '@?',
-        osVersion: '@?',
-        withOs: '=?'
+        hideVersion: '@?',
+        message: '@?'
       },
       controller: () => {},
       controllerAs: 'ctrl',
       link: (scope: any, element, attr, controller: any) =>
         {
-          const withOs = controller.withOs;
-          const osName = controller.osName;
-          const osVersion = controller.osVersion;
+          const hideVersion =
+            controller.hideVersion
+              ? controller.hideVersion
+              : '';
 
           // Internet Explorer 6-11
           const isIE = false || !!$document[0].documentMode;
@@ -129,7 +109,7 @@ angular
 
           scope.dismiss = () => { element.remove(); };
 
-          if (isIE && (!withOs || withOs(getOS(osName, osVersion))))
+          if (isIE && !shouldHide(hideVersion))
           {
             return;
           }
